@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="uk">
+<meta charset="utf-8">
+<title>Task 2</title>
+
+<input id="msg" placeholder="Введіть текст">
+<button id="save">Зберегти</button>
+<p id="out"></p>
+
+<script>
+  const key = 'message';
+  const out = document.getElementById('out');
+
+  const saved = sessionStorage.getItem(key);
+  if (saved) out.textContent = saved;
+
+  document.getElementById('save').addEventListener('click', () => {
+    const v = document.getElementById('msg').value;
+    sessionStorage.setItem(key, v);
+    out.textContent = v;
+  });
+</script>
+</html>
