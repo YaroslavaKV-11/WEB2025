@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <title>isString()</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+<script>
+  function isString(obj) {
+    return typeof obj === 'string' || obj instanceof String;
+  }
+</script>
+
+<p>Для перевірки роботи функції відкрийте консоль та запускайте функцію isString()</p>
+
+<h2>Приклади виконання функції</h2>
+<pre>
+// Рядок (примітив)
+isString('hello')               // Очікується: true
+
+// Рядок (об'єкт)
+isString(new String('hello'))   // Очікується: true
+
+// Не рядки
+isString(123)                   // Очікується: false
+isString(true)                  // Очікується: false
+isString(null)                  // Очікується: false
+isString(undefined)             // Очікується: false
+isString(['a', 'b'])            // Очікується: false
+isString({text: 'hi'})          // Очікується: false
+isString(Symbol('s'))           // Очікується: false
+</pre>
+
+</body>
+</html>
