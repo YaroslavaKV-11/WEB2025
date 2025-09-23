@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="uk">
+<meta charset="utf-8" />
+<title>Task3 (простий)</title>
+<style>
+  #text span { margin-right: .4em; cursor: pointer; }
+  .sel { background: yellow; }
+  .panel { display: grid; gap: .4rem; grid-template-columns: 1fr auto; max-width: 520px; }
+  .panel > * { padding: .25rem .4rem; }
+</style>
+
+<body>
+  <div id="text">
+    <p>
+      <span>Перше речення.</span>
+      <span>Друге речення.</span>
+    </p>
+  </div>
+
+  <div class="panel">
+    <input id="newParaText" placeholder="Текст для нового параграфа (речення)">
+    <button id="addPara">Додати параграф</button>
+
+    <input id="sentIndex" type="number" min="1" placeholder="№ речення (1..)">
+    <button id="selectSentence">Виділити речення</button>
+
+    <span></span>
+    <button id="clearSel">Зняти виділення</button>
+
+    <input id="replaceText" placeholder="Новий текст виділеного">
+    <button id="replaceBtn">Змінити текст</button>
+
+    <input id="newBeforeText" placeholder="Речення для додавання">
+    <button id="addBefore">Додати перед виділеним / у кінець</button>
+
+    <span></span>
+    <button id="deleteSel">Видалити виділене речення</button>
+
+    <input id="paraIndex" type="number" min="1" placeholder="№ параграфа (1..)">
+    <button id="deletePara">Видалити параграф</button>
+  </div>
+
+<script>
+  const box = document.getElementById('text');
+  let sel = null;
+
+  box.addEventListener('click', function (e) {
+    if (e.target.tagName === 'SPAN') {
+      if (sel) sel.classList.remove('sel');
+      sel = e.target;
+      sel.classList.add('sel');
+    }
+  });
+
+  document.getElementById('addPara').onclick = function () {
+    const t = document.getElementById('newParaText').value || 'Нове речення.';
+    const p = document.createElement('p');
+    const s = document.createElement('span');
+    s.textContent = t;
+    p.appendChild(s);
+    box.appendChild(p);
+  };
+
+  document.getElementById('selectSentence').onclick = function () {
+    const i = parseInt(document.getElementById('sentIndex').value, 10) - 1;
+    const all = box.querySelectorAll('span');
+    if (i >= 0 && i < all.length) {
+      if (sel) sel.classList.remove('sel');
+      sel = all[i];
+      sel.classList.add('sel');
+    }
+  };
+
+  document.getElementById('clearSel').onclick = function () {
+    if (sel) { sel.classList.remove('sel'); sel = null; }
+  };
+
+  document.getElementById('replaceBtn').onclick = function () {
+    if (!sel) return;
+    const t = document.getElementById('replaceText').value;
+    if (t) sel.textContent = t;
+  };
+
+  document.getElementById('addBefore').onclick = function () {
+    const t = document.getElementById('newBeforeText').value || 'Нове речення.';
+    const s = document.createElement('span');
+    s.textContent = t;
+
+    if (sel) {
+      sel.parentNode.insertBefore(s, sel);
+    } else {
+      let lastP = box.querySelector('p:last-of-type');
+      if (!lastP) {
+        lastP = document.createElement('p');
+        box.appendChild(lastP);
+      }
+      lastP.appendChild(s);
+    }
+  };
+
+  document.getElementById('deleteSel').onclick = function () {
+    if (!sel) return;
+    const p = sel.parentNode;
+    sel.remove();
+    sel = null;
+    if (!p.querySelector('span')) p.remove();
+  };
+
+  document.getElementById('deletePara').onclick = function () {
+    const i = parseInt(document.getElementById('paraIndex').value, 10) - 1;
+    const ps = box.querySelectorAll('p');
+    if (i >= 0 && i < ps.length) {
+      if (sel && ps[i].contains(sel)) { sel.classList.remove('sel'); sel = null; }
+      ps[i].remove();
+    }
+  };
+</script>
+</body>
+</html>
